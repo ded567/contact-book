@@ -1,6 +1,6 @@
-const customExpress = require('./config/customExpress')
+const routes = require('./routes')
 
 const port = 3000
 
-const app = customExpress()
+const app = routes()
 app.listen(port, () => console.log(`Servidor rodando na porta ${port}`))
