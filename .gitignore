@@ -23,3 +23,7 @@ build/Release
 
 # VSCode
 .vscode/
+
+# SSL Certificate
+app/server/*.cert
+app/server/*.key

@@ -28,6 +28,11 @@ module.exports = {
       lastName: 'Black',
       createdAt: new Date(),
       updatedAt: new Date()
+    },{
+      firstName: 'Peter',
+      lastName: 'Parker',
+      createdAt: new Date(),
+      updatedAt: new Date()
     }], {});
     
   },
