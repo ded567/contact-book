@@ -98,4 +98,78 @@ module.exports = app => {
 
     })
 
+    app.post('/contacts', (req, res) => {
+
+        const newContact = req.body;
+
+        if (newContact.firstName === undefined || newContact.firstName.split(/\s/g).join('') === '')
+            return res.status(400).json('Please inform the First Name of the contact')
+
+        db.Contacts.create(newContact).then(result => {
+
+            return res.status(200).json(result)
+
+        }).catch(err => {
+
+            return res.status(500).json(err.message)
+
+        })
+
+    })
+
+    app.patch('/contacts/:id', (req, res) => {
+
+        const id = parseInt(req.params.id)
+        const alteration = req.body;
+
+        if (isNaN(id))
+            return res.status(400).json('Invalid Contact')
+
+        db.Contacts.update(alteration,
+            {returning: true, where: {id: id} }).then(result => {
+            
+                db.Contacts.findByPk(id).then(result => {
+
+                    return res.status(200).json(result)
+        
+                }).catch(err => {
+
+                    return res.status(500).json(err.message)
+        
+                })
+
+        }).catch(err => {
+
+            return res.status(500).json(err.message)
+
+        })
+
+    })
+
+    app.delete('/contacts/:id', (req, res) => {
+
+        const id = parseInt(req.params.id)
+
+        if (isNaN(id))
+            return res.status(400).json('Invalid Contact')
+
+        db.Contacts.destroy( {where: {id: id} }).then(result => {
+
+            db.Contacts.findByPk(id).then(result => {
+
+                if (result == null)
+                    return res.status(200).json(`Contact ${id} removed`)
+                
+                return res.status(400).json(`Can't removed ${id}, an error has occured during the operation`)
+    
+            })
+
+        }).catch(err => {
+
+            return res.status(500).json(err.message)
+
+        })
+
+    })
+
 }
